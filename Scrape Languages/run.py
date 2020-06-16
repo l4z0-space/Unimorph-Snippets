@@ -58,7 +58,7 @@ def download_all_langs_files():
     with open('scraped.txt','r') as all_file:
         for line in all_file:
             it += 1
-            if it==4:
+            if it==50:
                 break
             # Prepares format
             line_content = line.split()
