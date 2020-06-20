@@ -91,7 +91,7 @@ def lemmaPop():
             lemmaName = x[0]
             POSName = x[1].split('\n')[0]
 
-            langName = Language.objects.get(name="English")
+            langName = Language.objects.get(name="Bulgarian")
             posName = POS.objects.get(name=POSName)
             #print(f'{langName}, {posName}')
             nextLemma = Lemma(name=lemmaName)
