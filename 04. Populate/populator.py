@@ -71,7 +71,7 @@ def familyPop():
 
 def languagePop():
     # pass
-    nextLang = Language(name="English")
+    nextLang = Language(name="Bulgarian")
     nextLang.walsCode = "bul"
     nextLang.genus = Genus.objects.get(name="Germanic")
     nextLang.family = Family.objects.get(name="Indo-European")
