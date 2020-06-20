@@ -24,47 +24,6 @@ Case;Ablative;ABL
 Case;Absolutive;ABS
 Case;Accusative;ACC
 Case;Allative;ALL
-Case;Near, in front of;ANTE
-Case;Approximative;APPRX
-Case;Next to;APUD
-Case;At;AT
-Case;Aversive;AVR
-Case;Benefactive;BEN
-Case;Essive-modal;BYWAY
-Case;Near;CIRC
-Case;Comitative;COM
-Case;Comparative;COMPV
-Case;Dative;DAT
-Case;Equative;EQTV
-Case;Ergative;ERG
-Case;Essive;ESS
-Case;Formal;FRML
-Aktionsart;Accomplishment;ACCMP
-Aktionsart;Achievement;ACH
-Aktionsart;Activity;ACTY
-Aktionsart;Atelic;ATEL
-Aktionsart;Durative;DUR
-Aktionsart;Dynamic;DYN
-Aktionsart;Punctual;PCT
-Aktionsart;Semelfactive;SEMEL
-Aktionsart;Stative;STAT
-Aktionsart;Telic;TEL
-Animacy;Animate;ANIM
-Animacy;Human;HUM
-Animacy;Inanimate;INAN
-Animacy;Non-human;NHUM
-Argument;Marking    3.sg Object (from feature template);ARGAC3S
-Aspect;Habitual;HAB
-Aspect;Imperfective;IPFV
-Aspect;Iterative;ITER
-Aspect;Perfective;PFV
-Aspect;Perfect;PRF
-Aspect;Progressive;PRog
-Aspect;Prospective;PROSP
-Case;Ablative;ABL
-Case;Absolutive;ABS
-Case;Accusative;ACC
-Case;Allative;ALL
 Case;Near,in front of;ANTE
 Case;Approximative;APPRX
 Case;Next to;APUD
@@ -74,7 +33,6 @@ Case;Benefactive;BEN
 Case;Essive-modal;BYWAy
 Case;Near;circ
 Case;Comitative;COM
-Case;Comparative;COMPV
 Case;Dative;DAT
 Case;Equative;EQTV
 Case;Ergative;ERG

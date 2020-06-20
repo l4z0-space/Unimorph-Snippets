@@ -4,7 +4,7 @@ django.setup()
 
 from django.contrib.auth.models import User
 from django.contrib import admin
-from wordDictionary.models import Genus, Word, Feature, Dimension, Language, Lemma, Family, TagSet, POS
+from api.models import Genus, Word, Feature, Dimension, Language, Lemma, Family, TagSet, POS
 
 
 # Dimensions
@@ -79,23 +79,27 @@ def languagePop():
     print("Language done")
 
 
-
-
 def lemmaPop():
-    with open("data/models/lemmas.txt","r",encoding="utf8") as lemmaData:
-        it = 0
+    with open("data/langs/lemmas/bulgarian.txt","r",encoding="utf8") as lemmaData:
+        # it = 0
         for x in lemmaData:
-            it += 1
-            if it % 100 == 0:
-                break
-            x = x.split("\n")
+            # it += 1
+            # if it % 100 == 0:
+            #     break
+            x = x.split(",")
+
             lemmaName = x[0]
-            nextLemma = Lemma(name=lemmaName)
+            POSName = x[1].split('\n')[0]
+
             langName = Language.objects.get(name="English")
+            posName = POS.objects.get(name=POSName)
+            #print(f'{langName}, {posName}')
+            nextLemma = Lemma(name=lemmaName)
             nextLemma.language = langName
-            posName = POS.objects.get(name="Verb")
             nextLemma.pos = posName
+
             nextLemma.save()
+
     print("Lemma done")
 
 
@@ -112,66 +116,60 @@ def readAppendix():
     print("\nStarting with words...")
 
 
-usedTagset = {}
-
 def wordPop():
 
-    with open("data/langs/Complete/English.txt","r",encoding="utf8") as wordData:
-        it = 0
+    with open("data/langs/words/bulgarian.txt","r",encoding="utf8") as wordData:
+        # it = 0
         for line in wordData:
-            # To get some feedback
-            it += 1
-            if it % 100 == 0:
-                break
+           # To get some feedback
+            # it += 1
+            # if it % 100 == 0:
+            #     break
 
             rowContent = line.split()
             if(len(rowContent)>=3): # checks if line is valid
+
                 tagsetName = rowContent[-1]
-                tagSetObject = None
-                try:
-                    if usedTagset[tagsetName] == 1:
-                        someTagset = TagSet.objects.get(name=tagsetName)
-                        tagSetObject = someTagset
-                except KeyError:
-                    usedTagset[tagsetName]=1
-                    tagSetObject = TagSet(name=tagsetName)
-                tagSetObject.save()
+                tagSetObject, created = TagSet.objects.get_or_create(name=tagsetName)
+
                 lemmaName = rowContent[0]
-                currWordList = rowContent[1:-1] # it can be more than a single words
+                currWordList = rowContent[1:-1] # it can be more than a single word
                 currWord = " ".join(currWordList)
 
                 allLabels = tagsetName.split(";") # last block of words corrensponds to allLabels
                 for currLabel in allLabels:
-                    try:
-                        currFeature = findFeature[currLabel.upper()]
-                        featObject = Feature.objects.get(name=currFeature)
-                        tagSetObject.features.add(featObject)
-                    except KeyError:
-                        print(f"{currLabel} label doesn't exist.")
-            # tagSetObject.save()
-            # Defining the Word/For
+                    currFeature = findFeature[currLabel.upper()]
+                    featObject = Feature.objects.get(name=currFeature)
+                    tagSetObject.features.add(featObject)
+
+                    # Defining the Word
+                posName = findFeature[allLabels[0]]
+                lemmaPOS = POS.objects.get(name=posName)
                 wordObject = Word(name=currWord)
-                lemmaObject = Lemma.objects.get(name=lemmaName)
+
+                try:
+                    lemmaObject = Lemma.objects.get(name=lemmaName,pos=lemmaPOS.id)
+                    wordObject.language = lemmaObject.language
+                except Lemma.DoesNotExist:
+                    lemmaObject = None
 
                 wordObject.lemma  = lemmaObject
                 wordObject.tagset = tagSetObject
-                wordObject.language = lemmaObject.language
                 wordObject.save()
 
 
 # *  uncomment below to populate !!in order!! *
+def popAll():
 
-# dimensionPop()
-# featurePop()
-# genusPop()
-# posPop()
-# familyPop()
-#
-# languagePop()
-# lemmaPop()
-#
-# readAppendix()
-# wordPop()
+    #dimensionPop()
+    #featurePop()
+    #genusPop()
+    #posPop()
+    #familyPop()
+    languagePop()
+    lemmaPop()
+    readAppendix()
+    wordPop()
 
 
 # Just in case it goes wrong
@@ -190,7 +188,5 @@ def emptyDatabase():
 
     print("Database is empty...")
 
-
 # emptyDatabase()
-
-#Words.objects.to_csv("words.csv",'name','lemma')
+popAll()
