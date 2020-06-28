@@ -1,0 +1,12 @@
+venv
+*/__pycache__
+*/migrations
+.git
+.gitignore
+.github
+.dockerignore
+.vscode
+Dockerfile
+LICENSE
+README.md
+.travis.yml
