@@ -11,10 +11,9 @@ from api.models import Genus, Word, Feature, Dimension, Language, Lemma, Family,
 def dimensionPop():
     with open("data/models/dimensions.txt","r") as dimData:
         for x in dimData:
-            a = x.split("\n")
-            dimName = a[0]
+            dimension = x.split("\n")
             # Create Object
-            nextDim = Dimension(name=dimName)
+            nextDim = Dimension(name=dimension[0])
             nextDim.save()
     print("Dimension done")
 
@@ -22,13 +21,11 @@ def dimensionPop():
 # Features
 def featurePop():
     with open("data/models/features.txt","r") as featData:
-        for x in featData:
-            line = x.split(";")
-            featName = line[1]
-            dimName = line[0]
+        for line in featData:
+            current_line = line.split(";")
             # Create Object
-            nextFeature = Feature(name=featName)
-            dimObject = Dimension.objects.get(name=dimName)
+            nextFeature = Feature(name=current_line[1])
+            dimObject = Dimension.objects.get(name=current_line[0])
             nextFeature.dimension = dimObject
             nextFeature.save()
     print("Feature done")
@@ -37,11 +34,10 @@ def featurePop():
 # Part of Speech
 def posPop():
     with open("data/models/POS.txt","r") as posData:
-        for x in posData:
-            line = x.split(";")
-            posName = line[1]
+        for line in posData:
+            current_line = line.split(";")
             # Create Object
-            nextPOS = POS(name=posName)
+            nextPOS = POS(name=current_line[1])
             nextPOS.save()
     print("Part of Speech done")
 
@@ -49,8 +45,8 @@ def posPop():
 # Genus
 def genusPop():
     with open("data/models/genus.txt","r") as genusData:
-        for x in genusData:
-            genusName = x.split("\n")[0]
+        for line in genusData:
+            genusName = line.split("\n")[0]
             # Create Object
             nextGenus = Genus(name=genusName)
             nextGenus.save()
@@ -61,8 +57,8 @@ def genusPop():
 def familyPop():
 
     with open("data/models/families.txt","r") as famData:
-        for x in famData:
-            FamilyName = x.split(";")[0]
+        for line in famData:
+            FamilyName = line.split(";")[0]
             # Create Object
             nextFamily = Family(name=FamilyName)
             nextFamily.save()
@@ -111,7 +107,7 @@ def readAppendix():
             rowWords = row.split(";")
             dimension = rowWords[0]
             feature = rowWords[1]
-            label =(rowWords[2].rstrip()).upper()
+            label = (rowWords[2].rstrip()).upper()
             findFeature[label]=feature
     print("\nStarting with words...")
 
