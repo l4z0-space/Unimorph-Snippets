@@ -5,16 +5,27 @@ import csv
 from rest_framework.views import APIView
 from django.db import connection
 from django.utils import timezone
-from django.db.models import F
-from django.db.models import Case, When, Value, CharField
+from django.db.models import F, Case, When, Value, CharField
 from ..models import Genus, Dimension, Feature, Language, Family, Lemma, Word
 from ..utils import Response
+from django.shortcuts import get_object_or_404
 
 class GenusDownload(APIView):
     """ Download a .csv file with all the Genuses """
     def get(self, request, format=None):
         filename = 'genuses'
         querySet =  Genus.objects.all().values(
+            'name',
+        )
+        response = Response()
+        return response.csvResponse(querySet, filename)
+
+
+class FamilyDownload(APIView):
+    """ Download a .csv file with all the Families """
+    def get(self, request, format=None):
+        filename = 'families'
+        querySet =  Family.objects.all().values(
             'name',
         )
         response = Response()
@@ -63,7 +74,7 @@ class WordDownload(APIView):
     def get(self, request, format=None,**kwargs):
         languageName = self.kwargs['languageName']
         languageName = "".join([languageName[0].upper(), languageName[1:].lower()])
-        languageObject = Language.objects.get(name=languageName)
+        languageObject = get_object_or_404(Language, name=languageName)
         querySet =  Word.objects.filter(language=languageObject.id).values(
             'name',
             lemma_name = F('lemma__name'),
@@ -77,7 +88,7 @@ class FamilyQueryDownload(APIView):
     """ Download a zipped folder with all the languages of a given family - api/download/families/familyName """
     def get(self, request, format=None,**kwargs):
         familyName = self.kwargs['familyName']
-        familyObject  = Family.objects.get(name=familyName)
+        familyObject  = get_object_or_404(Family, name=familyName)
         allLanguages = Language.objects.filter(family=familyObject.id)
         filename = '-'.join(["Family",familyName])
         response = Response()
@@ -88,7 +99,7 @@ class GenusQueryDownload(APIView):
     """ Download a zipped folder with all the languages of a given genus - api/download/genuses/genusName """
     def get(self, request, format=None,**kwargs):
         genusName = self.kwargs['genusName']
-        genusObject  = Genus.objects.get(name=genusName)
+        genusObject  = get_object_or_404(Genus, name=genusName)
         allLanguages = Language.objects.filter(genus=genusObject.id)
         filename = '-'.join(["Genus",genusName])
         response = Response()
