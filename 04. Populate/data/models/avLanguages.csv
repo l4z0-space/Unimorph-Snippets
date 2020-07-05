@@ -15,32 +15,32 @@ Bulgarian,bul,Slavic,Indo-European
 Catalan,ctl,Romance,Indo-European
 Central Kurdish,krd,Iranian,Indo-European
 Classical Armenian,,Armenian,Indo-European
-Classical Syriac,,,
-Cornish,,,
+Classical Syriac,,Semitic,Afro-Asiatic
+Cornish,crn,Celtic,Indo-European
 Crimean,cri,Turkic,Altaic
 Czech,cze,Slavic,Indo-European
 Danish,dsh,Germanic,Indo-European
 Dutch,dut,Germanic,Indo-European
 English,eng,Germanic,Indo-European
-Estonian,,,
-Faroese,,,
-Finnish,,,
-French,,,
+Estonian,est,Finnic,Uralic
+Faroese,far,Germanic,Indo-European
+Finnish,fin,Finnic,Uralic
+French,fre,Romance,Indo-European
 Friulian,,,
-Galician,,,
-Georgian,,,
+Galician,glc,Romance,Indo-European
+Georgian,geo,Kartvelian,Kartvelian
 German,ger,Germanic,Indo-European
 Gothic,,,
-Greenlandic,,,
-Haida,,,
-Hebrew,,,
-Hindi,,,
+Greenlandic,gre,Eskimo,Eskimo-Aleut
+Haida,hai,Haida,Haida
+Hebrew,heb,Semitic,Afro-Asiatic
+Hindi,hin,Indic,Indo-European
 Hungarian,hun,Ugric,Uralic
-Icelandic,,,
+Icelandic,ice,Germanic,Indo-European
 Ingrian,,,
-Irish,,,
+Irish,iri,Celtic,Indo-European
 Italian,ita,Romance,Indo-European
-Kabardian,,,
+Kabardian,kab,Northwest Caucasian,Northwest Caucasian
 Kannada,,,
 Karelian,,,
 Kashubian,,,
@@ -57,15 +57,15 @@ Low German,,,
 Lower Sorbian,,,
 Ludian,,,
 Macedonian,mcd,Slavic,Indo-European
-Maltese,,,
-Manx,,,
+Maltese,mlt,Semitic,Afro-Asiatic
+Manx,mnx,Celtic,Indo-European
 Mapudungun,map,Araucanian,Araucanian
 Middle French,,,
 Middle High German,,,
 Middle Low German,,,
-Modern Greek,,,
+Modern Greek,grk,Greek,Indo-European
 Murrinhpatha,,,
-Navajo,,,
+Navajo,nav,Athapaskan,Na-Dene
 Neapolitan,,,
 Norman,,,
 North Frisian,,,
@@ -73,39 +73,39 @@ Northern Kurdish,,,
 Northern Sami,,,
 Norwegian BokmĂĄl,,,
 Norwegian Nynorsk,,,
-Occitan,,,
+Occitan,occ,Romance,Indo-European
 Old Church Slavonic,,,
 Old English,,,
 Old French,,,
 Old Irish,,,
 Old Saxon,,,
-Pashto,,,
+Pashto,psh,Iranian,Indo-European
 Persian,prs,Iranian,Indo-European
 Polish,pol,Slavic,Indo-European
 Portuguese,por,Romance,Indo-European
-Quechua,,,
+Quechua,qan,Quechuan,Quechuan
 Romanian,rom,Romance,Indo-European
 Russian,rus,Slavic,Indo-European
 Sanskrit,,,
 Scottish Gaelic,,,
-Serbo Croatian,,,
-Slovenian,,,
+Serbo Croatian,scr,Slavic,Indo-European
+Slovenian,slo,Slavic,Indo-European
 Spanish,spa,Romance,Indo-European
-Swahili,,,
+Swahili,swa,Bantoid,Niger-Congo
 Swedish,swe,Germanic,Indo-European
-Tajik,,,
-Tatar,,,
-Telugu,,,
-Tibetan,,,
+Tajik,taj,Iranian,Indo-European
+Tatar,tvo,Turkic,Altaic
+Telugu,tel,South-Central Dravidian,Dravidian
+Tibetan,tmo,Bodic,Sino-Tibetan
 Turkish,tur,Turkic,Altaic
 Turkmen,tkm,Turkic,Altaic
 Ukrainian,ukr,Slavic,Indo-European
 Urdu,urd,Indic,Indo-European
-Uzbek,,,
+Uzbek,uzb,Turkic,Altaic
 Venetian,,,
-Veps (Vepsian),,,
-Votic,,,
+Veps (Vepsian),vep,Finnic,Uralic
+Votic,vot,Finnic,Uralic
 Welsh,wec,Celtic,Indo-European
-West Frisian,,,
-Yiddish,,,
+West Frisian,frw,Germanic,Indo-European
+Yiddish,ydd,Germanic,Indo-European
 Zulu,zul,Bantoid,Niger-Congo

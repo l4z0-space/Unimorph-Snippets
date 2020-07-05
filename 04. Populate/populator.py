@@ -27,6 +27,7 @@ def featurePop():
             nextFeature = Feature(name=current_line[1])
             dimObject = Dimension.objects.get(name=current_line[0])
             nextFeature.dimension = dimObject
+            nextFeature.label = current_line[2].rstrip().upper()
             nextFeature.save()
     print("Feature done")
 
@@ -66,12 +67,21 @@ def familyPop():
 
 
 def languagePop():
-    # pass
-    nextLang = Language(name="Bulgarian")
-    nextLang.walsCode = "bul"
-    nextLang.genus = Genus.objects.get(name="Germanic")
-    nextLang.family = Family.objects.get(name="Indo-European")
-    nextLang.save()
+    with open("data/models/avLanguages.csv","r") as lanData:
+        for line in lanData:
+            currLine = line.split(',')
+            nextLang = Language(name=currLine[0])
+            nextLang.walsCode = currLine[1]
+            try:
+                nextLang.genus = Genus.objects.get(name="Germanic")
+            except Genus.DoesNotExist:
+                nextLang.genus = None
+            try:
+                nextLang.family = Family.objects.get(name="Indo-European")
+            except Family.DoesNotExist:
+                nextLang.family = None
+
+            nextLang.save()
     print("Language done")
 
 
@@ -102,7 +112,6 @@ def lemmaPop():
 findFeature={}
 def readAppendix():
     with open("data/models/features.txt","r") as fileContent:
-
         for row in fileContent:
             rowWords = row.split(";")
             dimension = rowWords[0]
@@ -114,7 +123,7 @@ def readAppendix():
 
 def wordPop():
 
-    with open("data/langs/words/bulgarian.txt","r",encoding="utf8") as wordData:
+    with open("data/langs/Complete/Bulgarian.txt","r",encoding="utf8") as wordData:
         # it = 0
         for line in wordData:
            # To get some feedback
@@ -122,16 +131,17 @@ def wordPop():
             # if it % 100 == 0:
             #     break
 
-            rowContent = line.split()
+            # lemma Word Tagset - delimiter ('/t')
+            rowContent = line.split('\t')
+            print(rowContent)
             if(len(rowContent)>=3): # checks if line is valid
-
-                tagsetName = rowContent[-1]
+                tagsetName = rowContent[-1].rstrip()
                 tagSetObject, created = TagSet.objects.get_or_create(name=tagsetName)
 
                 lemmaName = rowContent[0]
-                currWordList = rowContent[1:-1] # it can be more than a single word
-                currWord = " ".join(currWordList)
-
+                # currWordList = rowContent[1] # it can be more than a single word
+                # currWord = " ".join(currWordList)
+                currWord = rowContent[1]
                 allLabels = tagsetName.split(";") # last block of words corrensponds to allLabels
                 for currLabel in allLabels:
                     currFeature = findFeature[currLabel.upper()]
@@ -139,7 +149,7 @@ def wordPop():
                     tagSetObject.features.add(featObject)
 
                     # Defining the Word
-                posName = findFeature[allLabels[0]]
+                posName = findFeature[allLabels[0].upper()]
                 lemmaPOS = POS.objects.get(name=posName)
                 wordObject = Word(name=currWord)
 
@@ -148,20 +158,20 @@ def wordPop():
                     wordObject.language = lemmaObject.language
                 except Lemma.DoesNotExist:
                     lemmaObject = None
-
-                wordObject.lemma  = lemmaObject
-                wordObject.tagset = tagSetObject
-                wordObject.save()
+                finally:
+                    wordObject.lemma  = lemmaObject
+                    wordObject.tagset = tagSetObject
+                    wordObject.save()
 
 
 # *  uncomment below to populate !!in order!! *
 def popAll():
 
-    #dimensionPop()
-    #featurePop()
-    #genusPop()
-    #posPop()
-    #familyPop()
+    dimensionPop()
+    featurePop()
+    genusPop()
+    posPop()
+    familyPop()
     languagePop()
     lemmaPop()
     readAppendix()
@@ -171,7 +181,6 @@ def popAll():
 # Just in case it goes wrong
 
 def emptyDatabase():
-
     Word.objects.all().delete()
     Lemma.objects.all().delete()
     TagSet.objects.all().delete()
@@ -181,8 +190,7 @@ def emptyDatabase():
     Dimension.objects.all().delete()
     Genus.objects.all().delete()
     POS.objects.all().delete()
-
     print("Database is empty...")
 
 # emptyDatabase()
-popAll()
+# popAll()
