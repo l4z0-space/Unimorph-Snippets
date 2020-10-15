@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from api.models import Genus, Word, Feature, Dimension, Language, Lemma, Family, TagSet, POS
 
+LANGUAGE_TO_POPULATE = 'Bulgarian'
 
 # Dimensions
 def dimensionPop():
@@ -47,7 +48,7 @@ def posPop():
 def genusPop():
     with open("data/models/genus.txt","r") as genusData:
         for line in genusData:
-            genusName = line.split("\n")[0]
+            genusName = line.split("\n")[0].rstrip()
             # Create Object
             nextGenus = Genus(name=genusName)
             nextGenus.save()
@@ -59,8 +60,7 @@ def familyPop():
 
     with open("data/models/families.txt","r") as famData:
         for line in famData:
-            FamilyName = line.split(";")[0]
-            # Create Object
+            FamilyName = line.split(";")[0].rstrip()
             nextFamily = Family(name=FamilyName)
             nextFamily.save()
     print("Family done")
@@ -68,45 +68,25 @@ def familyPop():
 
 def languagePop():
     with open("data/models/avLanguages.csv","r") as lanData:
+        # langName, walsCode, Genus, Family
         for line in lanData:
             currLine = line.split(',')
             nextLang = Language(name=currLine[0])
             nextLang.walsCode = currLine[1]
+            nextGenus = currLine[2].rstrip()
+            nextFamily = currLine[3].rstrip()
+            # print(f'{nextGenus} {nextFamily}')
             try:
-                nextLang.genus = Genus.objects.get(name="Germanic")
+                nextLang.genus = Genus.objects.get(name=nextGenus)
             except Genus.DoesNotExist:
                 nextLang.genus = None
             try:
-                nextLang.family = Family.objects.get(name="Indo-European")
+                nextLang.family = Family.objects.get(name=nextFamily)
             except Family.DoesNotExist:
                 nextLang.family = None
 
             nextLang.save()
     print("Language done")
-
-
-def lemmaPop():
-    with open("data/langs/lemmas/bulgarian.txt","r",encoding="utf8") as lemmaData:
-        # it = 0
-        for x in lemmaData:
-            # it += 1
-            # if it % 100 == 0:
-            #     break
-            x = x.split(",")
-
-            lemmaName = x[0]
-            POSName = x[1].split('\n')[0]
-
-            langName = Language.objects.get(name="Bulgarian")
-            posName = POS.objects.get(name=POSName)
-            #print(f'{langName}, {posName}')
-            nextLemma = Lemma(name=lemmaName)
-            nextLemma.language = langName
-            nextLemma.pos = posName
-
-            nextLemma.save()
-
-    print("Lemma done")
 
 
 findFeature={}
@@ -122,45 +102,47 @@ def readAppendix():
 
 
 def wordPop():
-
-    with open("data/langs/Complete/Bulgarian.txt","r",encoding="utf8") as wordData:
-        # it = 0
+    fileName = ''.join(['data/langs/Complete/',LANGUAGE_TO_POPULATE,'.txt'])
+    languageObject = Language.objects.get(name=LANGUAGE_TO_POPULATE)
+    with open(fileName,"r",encoding="utf8") as wordData:
+     
         for line in wordData:
-           # To get some feedback
-            # it += 1
-            # if it % 100 == 0:
-            #     break
-
-            # lemma Word Tagset - delimiter ('/t')
+            # Lemma Word Tagset - delimiter ('/t')
             rowContent = line.split('\t')
-            print(rowContent)
+            # print(rowContent)
             if(len(rowContent)>=3): # checks if line is valid
                 tagsetName = rowContent[-1].rstrip()
                 tagSetObject, created = TagSet.objects.get_or_create(name=tagsetName)
-
                 lemmaName = rowContent[0]
-                # currWordList = rowContent[1] # it can be more than a single word
-                # currWord = " ".join(currWordList)
-                currWord = rowContent[1]
+                wordName = rowContent[1]
+
                 allLabels = tagsetName.split(";") # last block of words corrensponds to allLabels
                 for currLabel in allLabels:
-                    currFeature = findFeature[currLabel.upper()]
-                    featObject = Feature.objects.get(name=currFeature)
-                    tagSetObject.features.add(featObject)
+                    try:
+                        currFeature = findFeature[currLabel.upper()]
+                        featObject = Feature.objects.get(name=currFeature)
+                        tagSetObject.features.add(featObject)
+                    except KeyError:
+                        print(f'{currLabel}  - not exist')
+                
 
-                    # Defining the Word
                 posName = findFeature[allLabels[0].upper()]
-                lemmaPOS = POS.objects.get(name=posName)
-                wordObject = Word(name=currWord)
-
+                posObject = POS.objects.get(name=posName)
+            
+                # If lemma exists
                 try:
-                    lemmaObject = Lemma.objects.get(name=lemmaName,pos=lemmaPOS.id)
-                    wordObject.language = lemmaObject.language
+                    lemmaObject = Lemma.objects.get(name=lemmaName,pos=posObject.id,language=languageObject.id)
+                # If not create a new one
                 except Lemma.DoesNotExist:
-                    lemmaObject = None
+                    lemmaObject = Lemma(name=lemmaName)
+                    lemmaObject.language = languageObject
+                    lemmaObject.pos = posObject
+                    lemmaObject.save()
                 finally:
+                    wordObject = Word(name=wordName)
                     wordObject.lemma  = lemmaObject
                     wordObject.tagset = tagSetObject
+                    wordObject.language = languageObject
                     wordObject.save()
 
 
@@ -173,7 +155,8 @@ def popAll():
     posPop()
     familyPop()
     languagePop()
-    lemmaPop()
+
+    # To populate only words and lemmas
     readAppendix()
     wordPop()
 
@@ -192,5 +175,7 @@ def emptyDatabase():
     POS.objects.all().delete()
     print("Database is empty...")
 
-# emptyDatabase()
-# popAll()
+
+if __name__ == "__main__":
+    # emptyDatabase()
+    # popAll()
