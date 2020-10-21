@@ -6,91 +6,86 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from api.models import Genus, Word, Feature, Dimension, Language, Lemma, Family, TagSet, POS
 
-LANGUAGE_TO_POPULATE = 'Bulgarian'
+LANGUAGE_TO_POPULATE = 'Turkmen'
 
 # Dimensions
 def dimensionPop():
+    ''' Populate -Dimension- '''
+
     with open("data/models/dimensions.txt","r") as dimData:
         for x in dimData:
             dimension = x.split("\n")
+            dimensionName = dimension[0]
             # Create Object
-            nextDim = Dimension(name=dimension[0])
+            nextDim = Dimension(name=dimensionName)
             nextDim.save()
     print("Dimension done")
 
 
 # Features
 def featurePop():
+    ''' Populate -Features- '''
+
     with open("data/models/features.txt","r") as featData:
         for line in featData:
-            current_line = line.split(";")
+            # Dimentsion ; Feature ; Label
+            currLine = line.split(";")
+            featureName = currLine[1]
+            dimensionName = currLine[0]
             # Create Object
-            nextFeature = Feature(name=current_line[1])
-            dimObject = Dimension.objects.get(name=current_line[0])
-            nextFeature.dimension = dimObject
-            nextFeature.label = current_line[2].rstrip().upper()
-            nextFeature.save()
+            featureObject = Feature(name=featureName)
+            dimensionObject = Dimension.objects.get(name=dimensionName)
+            featureObject.dimension = dimensionObject
+            featureObject.label = currLine[2].rstrip().upper()
+            featureObject.save()
     print("Feature done")
 
 
 # Part of Speech
 def posPop():
+    ''' Populate -Part of Speech- '''
+
     with open("data/models/POS.txt","r") as posData:
         for line in posData:
-            current_line = line.split(";")
+            currLine = line.split(";")
+            posName = currLine[1]
             # Create Object
-            nextPOS = POS(name=current_line[1])
-            nextPOS.save()
+            posObject = POS(name=posName)
+            posObject.save()
     print("Part of Speech done")
 
-
-# Genus
-def genusPop():
-    with open("data/models/genus.txt","r") as genusData:
-        for line in genusData:
-            genusName = line.split("\n")[0].rstrip()
-            # Create Object
-            nextGenus = Genus(name=genusName)
-            nextGenus.save()
-    print("Genus done")
-
-
-# Family
-def familyPop():
-
-    with open("data/models/families.txt","r") as famData:
-        for line in famData:
-            FamilyName = line.split(";")[0].rstrip()
-            nextFamily = Family(name=FamilyName)
-            nextFamily.save()
-    print("Family done")
-
-
+# Language
 def languagePop():
-    with open("data/models/avLanguages.csv","r") as lanData:
+    ''' Populate the -Languages- with their -Family- and -Genus- '''
+
+    with open("data/models/languages.txt","r") as lanData:
         # langName, walsCode, Genus, Family
         for line in lanData:
             currLine = line.split(',')
-            nextLang = Language(name=currLine[0])
-            nextLang.walsCode = currLine[1]
-            nextGenus = currLine[2].rstrip()
-            nextFamily = currLine[3].rstrip()
-            # print(f'{nextGenus} {nextFamily}')
-            try:
-                nextLang.genus = Genus.objects.get(name=nextGenus)
-            except Genus.DoesNotExist:
-                nextLang.genus = None
-            try:
-                nextLang.family = Family.objects.get(name=nextFamily)
-            except Family.DoesNotExist:
-                nextLang.family = None
+            languageObject = Language(name=currLine[0])
+            languageObject.walsCode = currLine[1]
+            genusName = currLine[2].rstrip()
+            familyName = currLine[3].rstrip()
+        
+            # Genus
+            languageObject.genus, created = Genus.objects.get_or_create(name=genusName)
+            if(languageObject.genus.name == ""):
+                languageObject.genus = None
+            
+            # Family
+            languageObject.family, created = Family.objects.get_or_create(name=familyName)
+            if(languageObject.family.name == ""):
+                languageObject.family = None
 
-            nextLang.save()
+            languageObject.save()
+
     print("Language done")
 
 
 findFeature={}
 def readAppendix():
+    ''' Read the appendix to map features with their labels '''
+
     with open("data/models/features.txt","r") as fileContent:
         for row in fileContent:
             rowWords = row.split(";")
@@ -100,8 +95,10 @@ def readAppendix():
             findFeature[label]=feature
     print("\nStarting with words...")
 
-
+# Words and Lemma
 def wordPop():
+    ''' Populate the -Words- and -Lemmas- '''
+
     fileName = ''.join(['data/langs/Complete/',LANGUAGE_TO_POPULATE,'.txt'])
     languageObject = Language.objects.get(name=LANGUAGE_TO_POPULATE)
     with open(fileName,"r",encoding="utf8") as wordData:
@@ -126,7 +123,7 @@ def wordPop():
                         print(f'{currLabel}  - not exist')
                 
 
-                posName = findFeature[allLabels[0].upper()]
+                posName = findFeature[allLabels[0].upper()].rstrip()
                 posObject = POS.objects.get(name=posName)
             
                 # If lemma exists
@@ -138,6 +135,7 @@ def wordPop():
                     lemmaObject.language = languageObject
                     lemmaObject.pos = posObject
                     lemmaObject.save()
+                # Finally create the word
                 finally:
                     wordObject = Word(name=wordName)
                     wordObject.lemma  = lemmaObject
@@ -148,22 +146,23 @@ def wordPop():
 
 # *  uncomment below to populate !!in order!! *
 def popAll():
+    ''' Populate the database '''
 
     dimensionPop()
     featurePop()
-    genusPop()
     posPop()
-    familyPop()
     languagePop()
 
     # To populate only words and lemmas
+
     readAppendix()
     wordPop()
 
 
 # Just in case it goes wrong
-
 def emptyDatabase():
+    ''' Empty the databse '''
+
     Word.objects.all().delete()
     Lemma.objects.all().delete()
     TagSet.objects.all().delete()
