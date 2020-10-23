@@ -1,0 +1,111 @@
+name,wals_code,genus,family
+Adyghe,ady,Northwest Caucasian,Northwest Caucasian
+Albanian,alb,Albanian,Indo-European
+Ancient Greek,gcy,Greek,Indo-European
+Arabic,abe,Semitic,Afro-Asiatic
+Armenian,arm,Armenian,Indo-European
+Asturian,ast,Romance,Indo-European
+Azerbaijani,aze,Turkic,Altaic
+Bashkir,bsk,Turkic,Altaic
+Basque,bsq,Basque,Basque
+Belarusian,,,
+Bengali,bec,Indic,Indo-European
+Breton,bre,Celtic,Indo-European
+Bulgarian,bul,Slavic,Indo-European
+Catalan,ctl,Romance,Indo-European
+Central Kurdish,krd,Iranian,Indo-European
+Classical Armenian,,Armenian,Indo-European
+Classical Syriac,,Semitic,Afro-Asiatic
+Cornish,crn,Celtic,Indo-European
+Crimean,cri,Turkic,Altaic
+Czech,cze,Slavic,Indo-European
+Danish,dsh,Germanic,Indo-European
+Dutch,dut,Germanic,Indo-European
+English,eng,Germanic,Indo-European
+Estonian,est,Finnic,Uralic
+Faroese,far,Germanic,Indo-European
+Finnish,fin,Finnic,Uralic
+French,fre,Romance,Indo-European
+Friulian,,,
+Galician,glc,Romance,Indo-European
+Georgian,geo,Kartvelian,Kartvelian
+German,ger,Germanic,Indo-European
+Gothic,,,
+Greenlandic,gre,Eskimo,Eskimo-Aleut
+Haida,hai,Haida,Haida
+Hebrew,heb,Semitic,Afro-Asiatic
+Hindi,hin,Indic,Indo-European
+Hungarian,hun,Ugric,Uralic
+Icelandic,ice,Germanic,Indo-European
+Ingrian,,,
+Irish,iri,Celtic,Indo-European
+Italian,ita,Romance,Indo-European
+Kabardian,kab,Northwest Caucasian,Northwest Caucasian
+Kannada,,,
+Karelian,,,
+Kashubian,,,
+Kazakh,kaz,Turkic,Altaic
+Khakas,,,
+Khaling,,,
+Ladin,,,
+Latin,,,
+Latvian,,,
+Lithuanian,lit,Baltic,Indo-European
+Livonian,,,
+Livvi,,,
+Low German,,,
+Lower Sorbian,,,
+Ludian,,,
+Macedonian,mcd,Slavic,Indo-European
+Maltese,mlt,Semitic,Afro-Asiatic
+Manx,mnx,Celtic,Indo-European
+Mapudungun,map,Araucanian,Araucanian
+Middle French,,,
+Middle High German,,,
+Middle Low German,,,
+Modern Greek,grk,Greek,Indo-European
+Murrinhpatha,,,
+Navajo,nav,Athapaskan,Na-Dene
+Neapolitan,,,
+Norman,,,
+North Frisian,,,
+Northern Kurdish,,,
+Northern Sami,,,
+Norwegian BokmĂĄl,,,
+Norwegian Nynorsk,,,
+Occitan,occ,Romance,Indo-European
+Old Church Slavonic,,,
+Old English,,,
+Old French,,,
+Old Irish,,,
+Old Saxon,,,
+Pashto,psh,Iranian,Indo-European
+Persian,prs,Iranian,Indo-European
+Polish,pol,Slavic,Indo-European
+Portuguese,por,Romance,Indo-European
+Quechua,qan,Quechuan,Quechuan
+Romanian,rom,Romance,Indo-European
+Russian,rus,Slavic,Indo-European
+Sanskrit,,,
+Scottish Gaelic,,,
+Serbo Croatian,scr,Slavic,Indo-European
+Slovenian,slo,Slavic,Indo-European
+Spanish,spa,Romance,Indo-European
+Swahili,swa,Bantoid,Niger-Congo
+Swedish,swe,Germanic,Indo-European
+Tajik,taj,Iranian,Indo-European
+Tatar,tvo,Turkic,Altaic
+Telugu,tel,South-Central Dravidian,Dravidian
+Tibetan,tmo,Bodic,Sino-Tibetan
+Turkish,tur,Turkic,Altaic
+Turkmen,tkm,Turkic,Altaic
+Ukrainian,ukr,Slavic,Indo-European
+Urdu,urd,Indic,Indo-European
+Uzbek,uzb,Turkic,Altaic
+Venetian,,,
+Veps (Vepsian),vep,Finnic,Uralic
+Votic,vot,Finnic,Uralic
+Welsh,wec,Celtic,Indo-European
+West Frisian,frw,Germanic,Indo-European
+Yiddish,ydd,Germanic,Indo-European
+Zulu,zul,Bantoid,Niger-Congo

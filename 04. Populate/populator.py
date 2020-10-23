@@ -176,5 +176,5 @@ def emptyDatabase():
 
 
 if __name__ == "__main__":
-    # emptyDatabase()
-    # popAll()
+    emptyDatabase()
+    popAll()
