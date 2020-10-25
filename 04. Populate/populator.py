@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from api.models import Genus, Word, Feature, Dimension, Language, Lemma, Family, TagSet, POS
 
-LANGUAGE_TO_POPULATE = 'Turkmen'
+
 
 # Dimensions
 def dimensionPop():
@@ -17,8 +17,9 @@ def dimensionPop():
             dimension = x.split("\n")
             dimensionName = dimension[0]
             # Create Object
-            nextDim = Dimension(name=dimensionName)
-            nextDim.save()
+            nextDim, created = Dimension.objects.get_or_create(name=dimensionName)
+            if created:
+                nextDim.save()
     print("Dimension done")
 
 
@@ -33,11 +34,13 @@ def featurePop():
             featureName = currLine[1]
             dimensionName = currLine[0]
             # Create Object
-            featureObject = Feature(name=featureName)
-            dimensionObject = Dimension.objects.get(name=dimensionName)
-            featureObject.dimension = dimensionObject
-            featureObject.label = currLine[2].rstrip().upper()
-            featureObject.save()
+            featureObject, created = Feature.objects.get_or_create(name=featureName)
+            if created:
+                dimensionObject = Dimension.objects.get(name=dimensionName)
+                featureObject.dimension = dimensionObject
+                featureObject.label = currLine[2].rstrip().upper()
+                featureObject.save()
+            
     print("Feature done")
 
 
@@ -50,9 +53,11 @@ def posPop():
             currLine = line.split(";")
             posName = currLine[1]
             # Create Object
-            posObject = POS(name=posName)
-            posObject.save()
+            posObject, created = POS.objects.get_or_create(name=posName)
+            if created:
+                posObject.save()
     print("Part of Speech done")
+
 
 # Language
 def languagePop():
@@ -62,25 +67,41 @@ def languagePop():
         # langName, walsCode, Genus, Family
         for line in lanData:
             currLine = line.split(',')
-            languageObject = Language(name=currLine[0])
-            languageObject.walsCode = currLine[1]
-            genusName = currLine[2].rstrip()
-            familyName = currLine[3].rstrip()
-        
-            # Genus
-            languageObject.genus, created = Genus.objects.get_or_create(name=genusName)
-            if(languageObject.genus.name == ""):
-                languageObject.genus = None
+            languageObject, created = Language.objects.get_or_create(name=currLine[0])
+            if created:
+                # languageObject.walsCode = currLine[1]
+                genusName = currLine[2].rstrip()
+                familyName = currLine[3].rstrip()
             
-            # Family
-            languageObject.family, created = Family.objects.get_or_create(name=familyName)
-            if(languageObject.family.name == ""):
-                languageObject.family = None
+                # Genus
+                languageObject.genus, created = Genus.objects.get_or_create(name=genusName)
+                if(languageObject.genus.name == ""):
+                    languageObject.genus = None
+                
+                # Family
+                languageObject.family, created = Family.objects.get_or_create(name=familyName)
+                if(languageObject.family.name == ""):
+                    languageObject.family = None
 
-            languageObject.save()
+                languageObject.save()
 
     print("Language done")
 
+
+def lang_codePop():
+    ''' Populate languages code (wals_code ISO)'''
+
+    with open("data/models/ISO.txt","r") as fileContent:
+        for row in fileContent:
+            row_words = row.split(' ')
+            iso = row_words[0].rstrip()
+            languageName = ' '.join(row_words[1:]).rstrip()
+            # print(f'|{iso}|{languageName}|')
+            languageObject = Language.objects.get(name=languageName)
+            languageObject.walsCode = iso
+            # print(languageObject.walsCode, languageObject.name)
+            languageObject.save()
+    print('ISO done')
 
 findFeature={}
 def readAppendix():
@@ -96,10 +117,10 @@ def readAppendix():
     print("\nStarting with words...")
 
 # Words and Lemma
-def wordPop():
+def wordPop(LANGUAGE_TO_POPULATE):
     ''' Populate the -Words- and -Lemmas- '''
 
-    fileName = ''.join(['data/langs/Complete/',LANGUAGE_TO_POPULATE,'.txt'])
+    fileName = ''.join(['data/langs/',LANGUAGE_TO_POPULATE,'.txt'])
     languageObject = Language.objects.get(name=LANGUAGE_TO_POPULATE)
     with open(fileName,"r",encoding="utf8") as wordData:
      
@@ -152,11 +173,11 @@ def popAll():
     featurePop()
     posPop()
     languagePop()
-
+    lang_codePop()
     # To populate only words and lemmas
 
-    readAppendix()
-    wordPop()
+    # readAppendix()
+    # wordPop()
 
 
 # Just in case it goes wrong
@@ -174,7 +195,53 @@ def emptyDatabase():
     POS.objects.all().delete()
     print("Database is empty...")
 
+#   -   -   -   -   -   -   -   -   -   -   -   -  #
+
+def showPopulated():
+    allLanguages = Language.objects.all()
+    print('Populated languages: ')
+    for language in allLanguages:
+        langID = language.id
+        words = Word.objects.filter(language=langID).count()
+        if (words > 0):
+            print(f'\t+ {language.name}: {words} words')
+
+def validateLanguage(LANGUAGE_TO_POPULATE):
+    response = True
+    try:
+        Language.objects.get(name=LANGUAGE_TO_POPULATE)
+    except Language.DoesNotExist:
+        print('Language does not exists...')
+        response = False
+
+    return response
+
+def menu():
+    ch = 100
+    while (ch!='0'):
+        print(' 1 - show populated \n 2 - empty db \n 3 - populate lang data')
+        ch = input('> ')
+
+        if(ch=='1'):
+            showPopulated()
+        elif(ch=='2'):
+            print('Are you sure to delete all data?')
+            c = input('Press y to delete: ')
+
+            if (c=='y'):
+                emptyDatabase()
+        elif(ch=='3'):
+            LANGUAGE_TO_POPULATE = input('Language name: ')
+            if (validateLanguage(LANGUAGE_TO_POPULATE)):
+                
+                readAppendix()
+                wordPop(LANGUAGE_TO_POPULATE)
+        
+
 
 if __name__ == "__main__":
-    emptyDatabase()
     popAll()
+    menu()
+    # showPopulated()
+    # emptyDatabase()
+    # popAll()
