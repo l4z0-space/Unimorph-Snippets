@@ -194,7 +194,7 @@ Possession;Possession by 2.SG.INFM;PSS2SINFM
 Possession;Possession by 2.SG.MASC;PSS2SM
 Possession;Possession by 3.DU;PSS3D
 Possession;Possession by 3.DU.FEM;PSS3DF
-Possession; Possession by 3.DU.MASC;PSS3DM
+Possession;Possession by 3.DU.MASC;PSS3DM
 Possession;Possession by 3.PL;PSS3P
 Possession;Possession by 3.PL.FEM;PSS3PF
 Possession;Possession by 3.PL.MASC;PSS3PM

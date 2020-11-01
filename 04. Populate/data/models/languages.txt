@@ -17,7 +17,7 @@ Central Kurdish,krd,Iranian,Indo-European
 Classical Armenian,,Armenian,Indo-European
 Classical Syriac,,Semitic,Afro-Asiatic
 Cornish,crn,Celtic,Indo-European
-Crimean,cri,Turkic,Altaic
+Crimean Tatar,cri,Turkic,Altaic
 Czech,cze,Slavic,Indo-European
 Danish,dsh,Germanic,Indo-European
 Dutch,dut,Germanic,Indo-European
@@ -71,7 +71,7 @@ Norman,,,
 North Frisian,,,
 Northern Kurdish,,,
 Northern Sami,,,
-Norwegian BokmĂĄl,,,
+Norwegian Bokmål,,,
 Norwegian Nynorsk,,,
 Occitan,occ,Romance,Indo-European
 Old Church Slavonic,,,
