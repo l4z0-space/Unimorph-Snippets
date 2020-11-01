@@ -68,7 +68,7 @@ def languagePop():
         for line in lanData:
             currLine = line.split(',')
             languageObject, created = Language.objects.get_or_create(name=currLine[0])
-            if created:
+            if created: 
                 # languageObject.walsCode = currLine[1]
                 genusName = currLine[2].rstrip()
                 familyName = currLine[3].rstrip()
@@ -195,7 +195,7 @@ def emptyDatabase():
     POS.objects.all().delete()
     print("Database is empty...")
 
-#   -   -   -   -   -   -   -   -   -   -   -   -  #
+#   -   -   -   -   -   -   -   -   -   -   -   -  # 
 
 def showPopulated():
     allLanguages = Language.objects.all()
@@ -242,6 +242,6 @@ def menu():
 if __name__ == "__main__":
     popAll()
     menu()
-    # showPopulated()
+    # showPopulated()  
     # emptyDatabase()
     # popAll()
